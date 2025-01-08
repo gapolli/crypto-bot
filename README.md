@@ -10,7 +10,7 @@ This project is a backend service for a crypto trading bot, developed to interac
 
 ## License
 
-This software is licensed under the MIT License. See the [LICENSE](LICENSE) file for more information.
+This software is licensed under the MIT License. See the [LICENSE](LICENSE.md) file for more information.
 
 ## Author
 
