@@ -1,0 +1,32 @@
+{
+    "server": {
+        "host": "The host to bind the server to. Set to 0.0.0.0 to bind to all available network interfaces.",
+        "port": "The port to listen on. Defaults to 5000."
+    },
+    "network": {
+        "polygon_rpc_url": "The URL of the Polygon RPC endpoint. Defaults to https://polygon-rpc.com."
+    },
+    "wallet": {
+        "address": "The address of the wallet to use. Replace with your own wallet address.",
+        "private_key": "The private key of the wallet to use. Replace with your own private key."
+    },
+    "logging": {
+        "level": "The log level. One of DEBUG, INFO, WARNING, ERROR, CRITICAL. Defaults to INFO.",
+        "file": "The log file to write to. Defaults to log.txt."
+    },
+    "contracts": {
+        "pol_address": "The address of the POL token contract. Defaults to 0x9c6687882c2EaF9F1F0B9f44f7f4B21aFb34Db2.",
+        "dai_address": "The address of the DAI token contract. Defaults to 0x6B175474E89094C44Da98b954EedeAC495271d0F.",
+        "router_address": "The address of the UniswapV2Router contract. Defaults to 0xA478c2975Ab1eaA0e77d664e344f31F24E756fBD."
+    },
+    "uniswap": {
+        "router_abi_path": "The path to the UniswapV2Router ABI file. Defaults to abi/uniswap-v2-router.json."
+    },
+    "auto_rebalance": {
+        "enabled": "Whether to enable the auto rebalance feature. Defaults to true."
+    },
+    "insights": {
+        "enabled": "Whether to enable the insights feature. Defaults to true."
+    }
+}
+

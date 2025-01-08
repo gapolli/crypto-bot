@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Crypto Bot Frontend</title>
+  <style>
+    #chart {
+      border: 2px solid #333;
+      padding: 10px;
+      margin-top: 20px;
+    }
+
+    body {
+      font-family: sans-serif;
+      text-align: center;
+      background-color: #f5f5f5;
+    }
+    .container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px;
+      background-color: white;
+      border-radius: 10px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      max-width: 600px;
+      margin: auto;
+    }
+    .input-container {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      padding: 20px;
+      margin-bottom: 20px;
+    }
+    .button-container {
+      display: flex;
+      justify-content: space-between;
+      padding: 20px;
+      margin-bottom: 20px;
+    }
+    button {
+      padding: 10px;
+      border-radius: 5px;
+      border: none;
+      background-color: #4CAF50;
+      color: white;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #3e8e41;
+    }
+    #footer {
+      display: none;
+      position: fixed;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 300px;
+      max-height: 300px;
+      overflow-y: auto;
+      background-color: black;
+      color: white;
+      text-align: center;
+      padding: 5px;
+      font-size: 12px;
+      cursor: move;
+    }
+    #result {
+      padding: 20px;
+      font-size: 24px;
+      margin-bottom: 20px;
+    }
+    #chart {
+      width: 500px;
+      height: 300px;
+      margin-bottom: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Crypto Bot Frontend</h1>
+    <form>
+      <div class="input-container">
+        <label for="amount-in-usd">Amount in USD:</label>
+        <input type="number" id="amount-in-usd" name="amount-in-usd" />
+      </div>
+      <div class="input-container">
+        <label for="token-a">Token A:</label>
+        <input type="text" id="token-a" name="token-a" value="POL" />
+      </div>
+      <div class="input-container">
+        <label for="token-b">Token B:</label>
+        <input type="text" id="token-b" name="token-b" value="DAI" />
+      </div>
+      <div class="input-container">
+        <label for="amount-a">Amount A:</label>
+        <input type="number" id="amount-a" name="amount-a" />
+      </div>
+      <div class="input-container">
+        <label for="amount-b">Amount B:</label>
+        <input type="number" id="amount-b" name="amount-b" />
+      </div>
+      <div class="button-container">
+        <button type="button" onclick="buyPol()">Buy POL</button>
+        <button type="button" onclick="sellPol()">Sell POL</button>
+        <button type="button" onclick="swapPol()">Swap POL</button>
+        <button type="button" onclick="autoRebalance()">Auto Rebalance</button>
+        <button type="button" onclick="toggleFooter()">Toggle Log</button>
+      </div>
+    </form>
+    <div id="result"></div>
+    <div id="chart"></div>
+    <div>
+      POL price: <span id="pol-price"></span>
+      DAI price: <span id="dai-price"></span>
+    </div>
+  </div>
+  <div id="footer">
+    <p>Server log:</p>
+    <pre id="log"></pre>
+  </div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
+  <script>
+    /**
+     * Sends a POST request to the /buy-pol endpoint with the amount in USD
+     * and displays the transaction hash in the #result div.
+     */
+    async function buyPol() {
+      const amountInUsd = document.getElementById('amount-in-usd').value;
+      const response = await fetch('/buy-pol', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ amountInUsd })
+      });
+      const data = await response.json();
+      document.getElementById('result').innerHTML = `Transaction hash: ${data.transaction_hash}`;
+    }
+
+    /**
+     * Sends a POST request to the /sell-pol endpoint with the amount in POL
+     * and displays the transaction hash in the #result div.
+     */
+    async function sellPol() {
+      const amountInPol = document.getElementById('amount-a').value;
+      const response = await fetch('/sell-pol', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ amountInPol })
+      });
+      const data = await response.json();
+      document.getElementById('result').innerHTML = `Transaction hash: ${data.transaction_hash}`;
+    }
+
+    /**
+     * Sends a POST request to the /swap-pol endpoint with the amount in POL
+     * and displays the transaction hash in the #result div.
+     */
+    async function swapPol() {
+      const amountInPol = document.getElementById('amount-a').value;
+      const response = await fetch('/swap-pol', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ amountInPol })
+      });
+      const data = await response.json();
+      document.getElementById('result').innerHTML = `Transaction hash: ${data.transaction_hash}`;
+    }
+
+    /**
+     * Sends a POST request to the /auto-rebalance endpoint with the token
+     * addresses and amounts and displays the transaction hash in the #result
+     * div.
+     */
+    async function autoRebalance() {
+      const response = await fetch('/auto-rebalance', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          token_a: document.getElementById('token-a').value,
+          token_b: document.getElementById('token-b').value,
+          amount_a: document.getElementById('amount-a').value,
+          amount_b: document.getElementById('amount-b').value
+        })
+      });
+      const data = await response.json();
+      document.getElementById('result').innerHTML = `Transaction hash: ${data.transaction_hash}`;
+    }
+
+    /**
+     * Fetches the server log from the /log endpoint and updates the #log
+     * div with the response.
+     */
+    async function getLog() {
+      const response = await fetch('/log');
+      const data = await response.text();
+      document.getElementById('log').innerHTML = data;
+    }
+
+    /**
+     * Fetches the balance from the /balance endpoint and returns the
+     * response as a promise.
+     */
+    async function getBalance() {
+      const response = await fetch('/balance');
+      const data = await response.json();
+      return data;
+    }
+
+    /**
+     * Toggles the display of the #footer div.
+     */
+    function toggleFooter() {
+      const footer = document.getElementById('footer');
+      footer.style.display = footer.style.display === 'none' ? 'block' : 'none';
+    }
+
+    /**
+     * Updates the chart with the balance data from the /balance endpoint.
+     */
+    async function updateChart() {
+      const balance = await getBalance();
+      const ctx = document.getElementById('chart').getContext('2d');
+      new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: balance.map(b => b.time),
+          datasets: [{
+            label: 'Balance',
+            data: balance.map(b => b.balance),
+            backgroundColor: 'rgba(255, 99, 132, 0.2)',
+            borderColor: 'rgba(255, 99, 132, 1)',
+            borderWidth: 1
+          }]
+        },
+        options: {
+          scales: {
+            y: {
+              beginAtZero: true
+            }
+          }
+        }
+      });
+    }
+
+    /**
+     * Updates the POL and DAI prices from the /price endpoint.
+     */
+    async function updatePrices() {
+      const response = await fetch('/price');
+      const data = await response.json();
+      document.getElementById('pol-price').innerHTML = data.pol_price;
+      document.getElementById('dai-price').innerHTML = data.dai_price;
+    }
+
+    // Update the log and chart every second
+    setInterval(getLog, 1000);
+    setInterval(updateChart, 1000);
+    setInterval(updatePrices, 1000);
+  </script>
+</body>
+</html>
+
