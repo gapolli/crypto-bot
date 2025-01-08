@@ -14,7 +14,7 @@ This software is licensed under the MIT License. See the [LICENSE](LICENSE) file
 
 ## Author
 
-This software was written by [Gustavo Polli](https://github.com/matthewwithanm).
+This software was written by [Gustavo Polli](https://github.com/gapolli).
 
 ## Contributing
 
